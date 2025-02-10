@@ -92,3 +92,9 @@
 ## Execute
 
 - run docker compose -f 'docker-compose.yml' up -d --build
+
+## Links
+
+-RabbitMQ Panel: http://localhost:15672/#/
+-Swagger UI: https://localhost:7181/swagger/index.html
+-PgAdmin UI: http://localhost:16543/browser/

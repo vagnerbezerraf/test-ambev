@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -57,8 +58,14 @@ public class Program
 
             if (app.Environment.IsDevelopment())
             {
+                app.ApplyMigrations();
+
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.ConfigObject.TryItOutEnabled = true;
+                    options.ConfigObject.DisplayRequestDuration = true;
+                });
             }
 
             app.UseHttpsRedirection();

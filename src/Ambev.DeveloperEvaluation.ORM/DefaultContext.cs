@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.ORM.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,8 @@ namespace Ambev.DeveloperEvaluation.ORM;
 public class DefaultContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleItem> SaleItems { get; set; }
 
     public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
     {
@@ -18,6 +21,13 @@ public class DefaultContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+        configurationBuilder.Properties<DateTime>().HaveConversion<DateTimeValueConverter>();
+        configurationBuilder.Properties<DateTime?>().HaveConversion<NullableDateTimeValueConverter>();
     }
 }
 public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
@@ -34,7 +44,7 @@ public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
 
         builder.UseNpgsql(
                connectionString,
-               b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.WebApi")
+               b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
         );
 
         return new DefaultContext(builder.Options);

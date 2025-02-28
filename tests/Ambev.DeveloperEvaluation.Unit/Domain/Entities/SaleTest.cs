@@ -72,9 +72,12 @@ namespace Ambev.DeveloperEvaluation.UnitTests.Domain.Entities
         [Fact]
         public void Validate_ShouldReturnValidResult_WhenSaleIsValid()
         {
+
             // Arrange
+            var saleId = Guid.NewGuid();
             var sale = new Sale
             {
+                Id = saleId,
                 Number = 12345,
                 Date = DateTime.UtcNow,
                 CustomerId = Guid.NewGuid(),
@@ -84,7 +87,7 @@ namespace Ambev.DeveloperEvaluation.UnitTests.Domain.Entities
                 BranchName = "Main Branch",
                 Items = new List<SaleItem>
                 {
-                    new SaleItem { Id = Guid.NewGuid(), Quantity = 2, Price = 10.0m }
+                    new SaleItem { SaleId = saleId, Id = Guid.NewGuid(), Quantity = 2, Price = 10.0m, ProductName = "Product A", ProductId = Guid.NewGuid() },
                 }
             };
 

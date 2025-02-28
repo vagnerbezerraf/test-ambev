@@ -19,20 +19,28 @@ public class RabbitMQEventPublisher : IEventPublisher
 
     public async void Publish<T>(T @event)
     {
-        var factory = new ConnectionFactory() { HostName = _hostname, UserName = _username, Password = _password };
-        var connection = await factory.CreateConnectionAsync();
-        using var channel = await connection.CreateChannelAsync();
+        try
+        {
+            var factory = new ConnectionFactory() { HostName = _hostname, UserName = _username, Password = _password };
+            var connection = await factory.CreateConnectionAsync();
+            using var channel = await connection.CreateChannelAsync();
 
-        _ = channel.QueueDeclareAsync(queue: typeof(T).Name, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _ = channel.QueueDeclareAsync(queue: typeof(T).Name, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-        var message = JsonSerializer.Serialize(@event);
-        var body = Encoding.UTF8.GetBytes(message);
+            var message = JsonSerializer.Serialize(@event);
+            var body = Encoding.UTF8.GetBytes(message);
 
-        await channel.BasicPublishAsync(
-            exchange: "",
-            routingKey: "SalesCreation",
-            mandatory: false,
-            body: body
-        );
+            await channel.BasicPublishAsync(
+                exchange: "",
+                routingKey: "SalesCreation",
+                mandatory: false,
+                body: body
+            );
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
     }
 }

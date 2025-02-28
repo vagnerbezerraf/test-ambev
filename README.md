@@ -103,3 +103,6 @@
 
 ### PgAdmin UI: http://localhost:16543/browser/
 - ![PgAdmin UI](https://raw.githubusercontent.com/vagnerbezerraf/test-ambev/refs/heads/main/docs/PgAdmin_1.png)
+
+### Unit Tests
+- ![Unit Tests Ok](https://raw.githubusercontent.com/vagnerbezerraf/test-ambev/refs/heads/main/docs/UnitTestPassed.png)
